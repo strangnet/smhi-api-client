@@ -1,5 +1,5 @@
 # smhi-api-client
-A client for accessing the SMHI API:s
+A client library for accessing the SMHI API:s
 
 [![Build Status](https://travis-ci.org/strangnet/smhi-api-client.svg?branch=master)](https://travis-ci.org/strangnet/smhi-api-client)
 [![Go Report Card](https://goreportcard.com/badge/github.com/strangnet/smhi-api-client)](https://goreportcard.com/report/github.com/strangnet/smhi-api-client)
