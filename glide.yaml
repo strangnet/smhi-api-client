@@ -1,6 +1,2 @@
 package: github.com/strangnet/smhi-api-client
-import:
-- package: github.com/go-chi/chi
-  version: ~3.3.2
-- package: github.com/google/uuid
-  version: ~0.2.0
+import: []

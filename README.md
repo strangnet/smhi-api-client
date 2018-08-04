@@ -1,4 +1,5 @@
 # smhi-api-client
+
 A client library for accessing the SMHI API:s
 
 [![Build Status](https://travis-ci.org/strangnet/smhi-api-client.svg?branch=master)](https://travis-ci.org/strangnet/smhi-api-client)
