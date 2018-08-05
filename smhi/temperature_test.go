@@ -46,7 +46,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 		]}`)
 	})
 
-	temps, _, err := client.Temperatures.GetAverageDailyTemperatures(context.Background(), 12345, PeriodLatestDay, FormatJSON)
+	temps, _, err := client.Temperatures.GetAverageDailyTemperatures(context.Background(), 12345, PeriodLatestDay)
 	if err != nil {
 		t.Errorf("Temperatures.GetAverageDailyTemperatures returned error: %v", err)
 	}
@@ -105,7 +105,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returns404(t *testing.T)
 		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}]}`)
 	})
 
-	_, resp, err := client.Temperatures.GetAverageDailyTemperatures(context.Background(), 12346, PeriodLatestDay, FormatJSON)
+	_, resp, err := client.Temperatures.GetAverageDailyTemperatures(context.Background(), 12346, PeriodLatestDay)
 	if err != nil {
 		if resp.StatusCode != http.StatusNotFound {
 			t.Errorf("Temperatures.GetAverageDailyTemperatures returned error code %d, expected %d", resp.StatusCode, http.StatusNotFound)
@@ -124,7 +124,7 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returns404(t *testing.T)
 		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}]}`)
 	})
 
-	_, resp, err := client.Temperatures.GetMinimumDailyTemperatures(context.Background(), 12346, PeriodLatestDay, FormatJSON)
+	_, resp, err := client.Temperatures.GetMinimumDailyTemperatures(context.Background(), 12346, PeriodLatestDay)
 	if err != nil {
 		if resp.StatusCode != http.StatusNotFound {
 			t.Errorf("Temperatures.GetMinimumDailyTemperatures returned error code %d, expected %d", resp.StatusCode, http.StatusNotFound)
@@ -143,7 +143,7 @@ func TestTemperatureService_GetMaximumTemperatures_returns404(t *testing.T) {
 		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}]}`)
 	})
 
-	_, resp, err := client.Temperatures.GetMaximumDailyTemperatures(context.Background(), 12346, PeriodLatestDay, FormatJSON)
+	_, resp, err := client.Temperatures.GetMaximumDailyTemperatures(context.Background(), 12346, PeriodLatestDay)
 	if err != nil {
 		if resp.StatusCode != http.StatusNotFound {
 			t.Errorf("Temperatures.GetMaximumDailyTemperatures returned error code %d, expected %d", resp.StatusCode, http.StatusNotFound)

@@ -6,16 +6,11 @@ import (
 	"net/http"
 )
 
-// Constants used for buiding the requests
+// Temperature parameter definitions
 const (
-	PeriodLatestHour       = "latest-hour"
-	PeriodLatestDay        = "latest-day"
-	PeriodLatestMonths     = "latest-months"
-	PeriodCorrectedArchive = "corrected-archive"
-
-	FormatJSON = "json"
-	FormatXML  = "xml"
-	FormatCSV  = "csv"
+	TemperatureParameterAverageDaily = 2
+	TemperatureParameterMinimumDaily = 19
+	TemperatureParameterMaximumDaily = 20
 )
 
 // TemperatureService is a service for the temperature queries
@@ -40,53 +35,75 @@ type TemperatureDataValue struct {
 	Quality string `json:"quality,omitempty"`
 }
 
-// GetAverageDailyTemperatures retrieves the average daily temperatures from a station
-func (s *TemperatureService) GetAverageDailyTemperatures(ctx context.Context, station uint16, period string, format string) (*TemperatureData, *http.Response, error) {
-	dataURL := fmt.Sprintf("api/version/latest/parameter/2/station/%d/period/%s/data.%s", station, period, format)
-	req, err := s.client.NewRequest("GET", dataURL)
+func getTemperatureData(ctx context.Context, client *Client, parameter int, station uint16, period string) (*TemperatureData, *http.Response, error) {
+	dataURL := fmt.Sprintf("api/version/latest/parameter/%d/station/%d/period/%s/data.json", parameter, station, period)
+	req, err := client.NewRequest("GET", dataURL)
 	if err != nil {
 		return nil, nil, err
 	}
 
 	td := &TemperatureData{}
-	resp, err := s.client.Do(ctx, req, td)
+	resp, err := client.Do(ctx, req, td)
 	if err != nil {
 		return nil, resp, err
 	}
 
 	return td, resp, nil
+}
+
+func getParameterData(ctx context.Context, client *Client, parameter int, includeInactive bool) (*Parameter, *http.Response, error) {
+	dataURL := fmt.Sprintf("api/version/latest/parameter/%d.json", parameter)
+	req, err := client.NewRequest("GET", dataURL)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	p := &Parameter{}
+	resp, err := client.Do(ctx, req, p)
+	if err != nil {
+		return nil, resp, err
+	}
+
+	// Filter out the inactive stations
+	if !includeInactive {
+		newStation := make([]Station, 0)
+		for _, s := range p.Station {
+			if s.Active {
+				newStation = append(newStation, s)
+			}
+		}
+		p.Station = newStation
+	}
+
+	return p, resp, nil
+}
+
+// GetAverageDailyTemperatures retrieves the average daily temperatures from a station
+func (s *TemperatureService) GetAverageDailyTemperatures(ctx context.Context, station uint16, period string) (*TemperatureData, *http.Response, error) {
+	return getTemperatureData(ctx, s.client, TemperatureParameterAverageDaily, station, period)
+}
+
+// GetStationsWithAverageDailyTemperatures retrieves all stations with average daily temperatures
+func (s *TemperatureService) GetStationsWithAverageDailyTemperatures(ctx context.Context, includeInactive bool) (*Parameter, *http.Response, error) {
+	return getParameterData(ctx, s.client, TemperatureParameterAverageDaily, includeInactive)
 }
 
 // GetMinimumDailyTemperatures retrieves the minimum daily temperatures from a station
-func (s *TemperatureService) GetMinimumDailyTemperatures(ctx context.Context, station uint16, period string, format string) (*TemperatureData, *http.Response, error) {
-	dataURL := fmt.Sprintf("api/version/latest/parameter/19/station/%d/period/%s/data.%s", station, period, format)
-	req, err := s.client.NewRequest("GET", dataURL)
-	if err != nil {
-		return nil, nil, err
-	}
+func (s *TemperatureService) GetMinimumDailyTemperatures(ctx context.Context, station uint16, period string) (*TemperatureData, *http.Response, error) {
+	return getTemperatureData(ctx, s.client, TemperatureParameterMinimumDaily, station, period)
+}
 
-	td := &TemperatureData{}
-	resp, err := s.client.Do(ctx, req, td)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return td, resp, nil
+// GetStationsWithMinimumDailyTemperatures retrieves all stations with minimum daily temperatures
+func (s *TemperatureService) GetStationsWithMinimumDailyTemperatures(ctx context.Context, includeInactive bool) (*Parameter, *http.Response, error) {
+	return getParameterData(ctx, s.client, TemperatureParameterAverageDaily, includeInactive)
 }
 
 // GetMaximumDailyTemperatures retrieves the maximum daily temperatures from a station
-func (s *TemperatureService) GetMaximumDailyTemperatures(ctx context.Context, station uint16, period string, format string) (*TemperatureData, *http.Response, error) {
-	dataURL := fmt.Sprintf("api/version/latest/parameter/20/station/%d/period/%s/data.%s", station, period, format)
-	req, err := s.client.NewRequest("GET", dataURL)
-	if err != nil {
-		return nil, nil, err
-	}
+func (s *TemperatureService) GetMaximumDailyTemperatures(ctx context.Context, station uint16, period string) (*TemperatureData, *http.Response, error) {
+	return getTemperatureData(ctx, s.client, TemperatureParameterMinimumDaily, station, period)
+}
 
-	td := &TemperatureData{}
-	resp, err := s.client.Do(ctx, req, td)
-	if err != nil {
-		return nil, resp, err
-	}
-
-	return td, resp, nil
+// GetStationsWithMaximumDailyTemperatures retrieves all stations with maximum daily temperatures
+func (s *TemperatureService) GetStationsWithMaximumDailyTemperatures(ctx context.Context, includeInactive bool) (*Parameter, *http.Response, error) {
+	return getParameterData(ctx, s.client, TemperatureParameterMaximumDaily, includeInactive)
 }
