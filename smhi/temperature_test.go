@@ -112,7 +112,6 @@ func TestTemperatureService_GetAverageDailyTemperatures_returns404(t *testing.T)
 		}
 
 	}
-
 }
 
 func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t *testing.T) {
@@ -203,7 +202,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 		}
 
 		if !reflect.DeepEqual(p, want) {
-			t.Errorf("Temperatures.GetAverageDailyTemperatures returned %+v, want %+v", p, want)
+			t.Errorf("Temperatures.GetStationsWithAverageDailyTemperatures returned %+v, want %+v", p, want)
 		}
 	})
 	t.Run("includes only active stations", func(t *testing.T) {
@@ -236,10 +235,9 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 		}
 
 		if !reflect.DeepEqual(p, want) {
-			t.Errorf("Temperatures.GetAverageDailyTemperatures returned %+v, want %+v", p, want)
+			t.Errorf("Temperatures.GetStationsWithAverageDailyTemperatures returned %+v, want %+v", p, want)
 		}
 	})
-
 }
 
 func TestTemperatureService_GetMinimumDailyTemperatures_returns404(t *testing.T) {
@@ -258,7 +256,132 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returns404(t *testing.T)
 		}
 
 	}
+}
 
+func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t *testing.T) {
+	data := `{
+		"key": "19",
+		"updated": 1533495600000,
+		"title": "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+		"summary": "min, 1 gång per dygn",
+		"valueType": "INTERVAL",
+		"station": [
+		{
+			"name": "Abelvattnet Aut",
+			"owner": "SMHI",
+			"id": 154860,
+			"height": 665,
+			"latitude": 65.53,
+			"longitude": 14.97,
+			"active": true,
+			"key": "154860",
+			"updated": 841535999000,
+			"title": "Lufttemperatur - Abelvattnet Aut",
+			"summary": "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0"
+		},
+		{
+			"name": "Abisko",
+			"owner": "SMHI",
+			"id": 188800,
+			"height": 388,
+			"latitude": 68.3557,
+			"longitude": 18.8206,
+			"active": false,
+			"key": "188800",
+			"updated": 1533081599000,
+			"title": "Lufttemperatur - Abisko",
+			"summary": "Latitud: 68.3557 Longitud: 18.8206 Höjd: 388.0"
+		}
+		]
+	}`
+
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/19.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, data)
+	})
+
+	t.Run("includes all stations", func(t *testing.T) {
+		p, _, err := client.Temperatures.GetStationsWithMinimumDailyTemperatures(context.Background(), true)
+		if err != nil {
+			t.Errorf("Temperatures.GetStationsWithMinimumDailyTemperatures returned error: %v", err)
+		}
+
+		want := &Parameter{
+			Key:       "19",
+			Updated:   1533495600000,
+			Title:     "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+			Summary:   "min, 1 gång per dygn",
+			ValueType: "INTERVAL",
+			Station: []Station{
+				{
+					Name:      "Abelvattnet Aut",
+					Owner:     "SMHI",
+					ID:        154860,
+					Height:    665,
+					Latitude:  65.53,
+					Longitude: 14.97,
+					Active:    true,
+					Key:       "154860",
+					Updated:   841535999000,
+					Title:     "Lufttemperatur - Abelvattnet Aut",
+					Summary:   "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0",
+				},
+				{
+					Name:      "Abisko",
+					Owner:     "SMHI",
+					ID:        188800,
+					Height:    388,
+					Latitude:  68.3557,
+					Longitude: 18.8206,
+					Active:    false,
+					Key:       "188800",
+					Updated:   1533081599000,
+					Title:     "Lufttemperatur - Abisko",
+					Summary:   "Latitud: 68.3557 Longitud: 18.8206 Höjd: 388.0",
+				},
+			},
+		}
+
+		if !reflect.DeepEqual(p, want) {
+			t.Errorf("Temperatures.GetStationsWithMinimumDailyTemperatures returned %+v, want %+v", p, want)
+		}
+	})
+	t.Run("includes only active stations", func(t *testing.T) {
+		p, _, err := client.Temperatures.GetStationsWithMinimumDailyTemperatures(context.Background(), false)
+		if err != nil {
+			t.Errorf("Temperatures.GetStationsWithMinimumDailyTemperatures returned error: %v", err)
+		}
+
+		want := &Parameter{
+			Key:       "19",
+			Updated:   1533495600000,
+			Title:     "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+			Summary:   "min, 1 gång per dygn",
+			ValueType: "INTERVAL",
+			Station: []Station{
+				{
+					Name:      "Abelvattnet Aut",
+					Owner:     "SMHI",
+					ID:        154860,
+					Height:    665,
+					Latitude:  65.53,
+					Longitude: 14.97,
+					Active:    true,
+					Key:       "154860",
+					Updated:   841535999000,
+					Title:     "Lufttemperatur - Abelvattnet Aut",
+					Summary:   "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0",
+				},
+			},
+		}
+
+		if !reflect.DeepEqual(p, want) {
+			t.Errorf("Temperatures.GetStationsWithMinimumDailyTemperatures returned %+v, want %+v", p, want)
+		}
+	})
 }
 
 func TestTemperatureService_GetMaximumTemperatures_returns404(t *testing.T) {
@@ -275,7 +398,132 @@ func TestTemperatureService_GetMaximumTemperatures_returns404(t *testing.T) {
 		if resp.StatusCode != http.StatusNotFound {
 			t.Errorf("Temperatures.GetMaximumDailyTemperatures returned error code %d, expected %d", resp.StatusCode, http.StatusNotFound)
 		}
-
 	}
+}
+
+func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t *testing.T) {
+	data := `{
+		"key": "20",
+		"updated": 1533495600000,
+		"title": "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+		"summary": "max, 1 gång per dygn",
+		"valueType": "INTERVAL",
+		"station": [
+		{
+			"name": "Abelvattnet Aut",
+			"owner": "SMHI",
+			"id": 154860,
+			"height": 665,
+			"latitude": 65.53,
+			"longitude": 14.97,
+			"active": true,
+			"key": "154860",
+			"updated": 841535999000,
+			"title": "Lufttemperatur - Abelvattnet Aut",
+			"summary": "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0"
+		},
+		{
+			"name": "Abisko",
+			"owner": "SMHI",
+			"id": 188800,
+			"height": 388,
+			"latitude": 68.3557,
+			"longitude": 18.8206,
+			"active": false,
+			"key": "188800",
+			"updated": 1533081599000,
+			"title": "Lufttemperatur - Abisko",
+			"summary": "Latitud: 68.3557 Longitud: 18.8206 Höjd: 388.0"
+		}
+		]
+	}`
+
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/20.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, data)
+	})
+
+	t.Run("includes all stations", func(t *testing.T) {
+		p, _, err := client.Temperatures.GetStationsWithMaximumDailyTemperatures(context.Background(), true)
+		if err != nil {
+			t.Errorf("Temperatures.GetStationsWithMaximumDailyTemperatures returned error: %v", err)
+		}
+
+		want := &Parameter{
+			Key:       "20",
+			Updated:   1533495600000,
+			Title:     "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+			Summary:   "max, 1 gång per dygn",
+			ValueType: "INTERVAL",
+			Station: []Station{
+				{
+					Name:      "Abelvattnet Aut",
+					Owner:     "SMHI",
+					ID:        154860,
+					Height:    665,
+					Latitude:  65.53,
+					Longitude: 14.97,
+					Active:    true,
+					Key:       "154860",
+					Updated:   841535999000,
+					Title:     "Lufttemperatur - Abelvattnet Aut",
+					Summary:   "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0",
+				},
+				{
+					Name:      "Abisko",
+					Owner:     "SMHI",
+					ID:        188800,
+					Height:    388,
+					Latitude:  68.3557,
+					Longitude: 18.8206,
+					Active:    false,
+					Key:       "188800",
+					Updated:   1533081599000,
+					Title:     "Lufttemperatur - Abisko",
+					Summary:   "Latitud: 68.3557 Longitud: 18.8206 Höjd: 388.0",
+				},
+			},
+		}
+
+		if !reflect.DeepEqual(p, want) {
+			t.Errorf("Temperatures.GetStationsWithMaximumDailyTemperatures returned %+v, want %+v", p, want)
+		}
+	})
+	t.Run("includes only active stations", func(t *testing.T) {
+		p, _, err := client.Temperatures.GetStationsWithMaximumDailyTemperatures(context.Background(), false)
+		if err != nil {
+			t.Errorf("Temperatures.GetStationsWithMaximumDailyTemperatures returned error: %v", err)
+		}
+
+		want := &Parameter{
+			Key:       "20",
+			Updated:   1533495600000,
+			Title:     "Lufttemperatur: Välj station (sedan tidsutsnitt)",
+			Summary:   "max, 1 gång per dygn",
+			ValueType: "INTERVAL",
+			Station: []Station{
+				{
+					Name:      "Abelvattnet Aut",
+					Owner:     "SMHI",
+					ID:        154860,
+					Height:    665,
+					Latitude:  65.53,
+					Longitude: 14.97,
+					Active:    true,
+					Key:       "154860",
+					Updated:   841535999000,
+					Title:     "Lufttemperatur - Abelvattnet Aut",
+					Summary:   "Latitud: 65.5300 Longitud: 14.9700 Höjd: 665.0",
+				},
+			},
+		}
+
+		if !reflect.DeepEqual(p, want) {
+			t.Errorf("Temperatures.GetStationsWithMaximumDailyTemperatures returned %+v, want %+v", p, want)
+		}
+	})
 
 }
