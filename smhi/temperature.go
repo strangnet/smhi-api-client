@@ -95,7 +95,7 @@ func (s *TemperatureService) GetMinimumDailyTemperatures(ctx context.Context, st
 
 // GetStationsWithMinimumDailyTemperatures retrieves all stations with minimum daily temperatures
 func (s *TemperatureService) GetStationsWithMinimumDailyTemperatures(ctx context.Context, includeInactive bool) (*Parameter, *http.Response, error) {
-	return getParameterData(ctx, s.client, TemperatureParameterAverageDaily, includeInactive)
+	return getParameterData(ctx, s.client, TemperatureParameterMinimumDaily, includeInactive)
 }
 
 // GetMaximumDailyTemperatures retrieves the maximum daily temperatures from a station
