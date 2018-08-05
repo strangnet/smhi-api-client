@@ -19,13 +19,13 @@ type StationSet struct{}
 type Station struct {
 	Name      string  `json:"name,omitempty"`
 	Owner     string  `json:"owner,omitempty"`
-	ID        uint16  `json:"id,omitempty"`
+	ID        uint32  `json:"id,omitempty"`
 	Height    int16   `json:"height,omitempty"`
 	Latitude  float32 `json:"latitude,omitempty"`
 	Longitude float32 `json:"longitude,omitempty"`
 	Active    bool    `json:"active,omitempty"`
 	Key       string  `json:"key,omitempty"`
-	Updated   uint32  `json:"updated,omitempty"`
+	Updated   uint64  `json:"updated,omitempty"`
 	Title     string  `json:"title,omitempty"`
 	Summary   string  `json:"summary,omitempty"`
 }
