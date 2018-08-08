@@ -26,7 +26,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 		"key": "97100",
 		"name": "Tullinge A",
 		"owner": "SMHI",
-		"height": 2
+		"height": 2.0
 		},
 		"period": {
 		"key": "latest-day",
@@ -39,7 +39,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 		{
 		"from": 818985600000,
 		"to": 1533470400000,
-		"height": 45,
+		"height": 45.0,
 		"latitude": 59.1789,
 		"longitude": 17.9125
 		}
@@ -72,7 +72,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 			Key:    "97100",
 			Name:   "Tullinge A",
 			Owner:  "SMHI",
-			Height: 2,
+			Height: 2.0,
 		},
 		Period: PeriodData{
 			Key:      "latest-day",
@@ -85,7 +85,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 			{
 				From:      818985600000,
 				To:        1533470400000,
-				Height:    45,
+				Height:    45.0,
 				Latitude:  59.1789,
 				Longitude: 17.9125,
 			},
@@ -114,7 +114,7 @@ func TestTemperatureService_GetHourlyTemperatures_returnsOK(t *testing.T) {
 		"key": "97100",
 		"name": "Tullinge A",
 		"owner": "SMHI",
-		"height": 2
+		"height": 2.0
 		},
 		"period": {
 		"key": "latest-day",
@@ -127,7 +127,7 @@ func TestTemperatureService_GetHourlyTemperatures_returnsOK(t *testing.T) {
 		{
 		"from": 818985600000,
 		"to": 1533470400000,
-		"height": 45,
+		"height": 45.0,
 		"latitude": 59.1789,
 		"longitude": 17.9125
 		}
@@ -160,7 +160,7 @@ func TestTemperatureService_GetHourlyTemperatures_returnsOK(t *testing.T) {
 			Key:    "97100",
 			Name:   "Tullinge A",
 			Owner:  "SMHI",
-			Height: 2,
+			Height: 2.0,
 		},
 		Period: PeriodData{
 			Key:      "latest-day",
@@ -173,7 +173,7 @@ func TestTemperatureService_GetHourlyTemperatures_returnsOK(t *testing.T) {
 			{
 				From:      818985600000,
 				To:        1533470400000,
-				Height:    45,
+				Height:    45.0,
 				Latitude:  59.1789,
 				Longitude: 17.9125,
 			},
@@ -235,7 +235,7 @@ func TestTemperatureService_GetAverageMonthlyTemperatures_returnsOK(t *testing.T
 			"key": "97100",
 			"name": "Tullinge A",
 			"owner": "SMHI",
-			"height": 2
+			"height": 2.0
 		},
 		"period": {
 			"key": "latest-months",
@@ -248,7 +248,7 @@ func TestTemperatureService_GetAverageMonthlyTemperatures_returnsOK(t *testing.T
 		{
 		"from": 818985600000,
 		"to": 1533470400000,
-		"height": 45,
+		"height": 45.0,
 		"latitude": 59.1789,
 		"longitude": 17.9125
 		}
@@ -317,7 +317,7 @@ func TestTemperatureService_GetAverageMonthlyTemperatures_returnsOK(t *testing.T
 			Key:    "97100",
 			Name:   "Tullinge A",
 			Owner:  "SMHI",
-			Height: 2,
+			Height: 2.0,
 		},
 		Period: PeriodData{
 			Key:      "latest-months",
@@ -330,7 +330,7 @@ func TestTemperatureService_GetAverageMonthlyTemperatures_returnsOK(t *testing.T
 			{
 				From:      818985600000,
 				To:        1533470400000,
-				Height:    45,
+				Height:    45.0,
 				Latitude:  59.1789,
 				Longitude: 17.9125,
 			},
@@ -359,7 +359,7 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returnsOK(t *testing.T) 
 		"key": "97100",
 		"name": "Tullinge A",
 		"owner": "SMHI",
-		"height": 2
+		"height": 2.0
 		},
 		"period": {
 		"key": "latest-day",
@@ -372,7 +372,7 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returnsOK(t *testing.T) 
 		{
 		"from": 818985600000,
 		"to": 1533470400000,
-		"height": 45,
+		"height": 45.0,
 		"latitude": 59.1789,
 		"longitude": 17.9125
 		}
@@ -405,7 +405,7 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returnsOK(t *testing.T) 
 			Key:    "97100",
 			Name:   "Tullinge A",
 			Owner:  "SMHI",
-			Height: 2,
+			Height: 2.0,
 		},
 		Period: PeriodData{
 			Key:      "latest-day",
@@ -418,7 +418,7 @@ func TestTemperatureService_GetMinimumDailyTemperatures_returnsOK(t *testing.T) 
 			{
 				From:      818985600000,
 				To:        1533470400000,
-				Height:    45,
+				Height:    45.0,
 				Latitude:  59.1789,
 				Longitude: 17.9125,
 			},
@@ -447,7 +447,7 @@ func TestTemperatureService_GetMaximumDailyTemperatures_returnsOK(t *testing.T) 
 		"key": "97100",
 		"name": "Tullinge A",
 		"owner": "SMHI",
-		"height": 2
+		"height": 2.0
 		},
 		"period": {
 		"key": "latest-day",
@@ -460,7 +460,7 @@ func TestTemperatureService_GetMaximumDailyTemperatures_returnsOK(t *testing.T) 
 		{
 		"from": 818985600000,
 		"to": 1533470400000,
-		"height": 45,
+		"height": 45.0,
 		"latitude": 59.1789,
 		"longitude": 17.9125
 		}
@@ -493,7 +493,7 @@ func TestTemperatureService_GetMaximumDailyTemperatures_returnsOK(t *testing.T) 
 			Key:    "97100",
 			Name:   "Tullinge A",
 			Owner:  "SMHI",
-			Height: 2,
+			Height: 2.0,
 		},
 		Period: PeriodData{
 			Key:      "latest-day",
@@ -506,7 +506,7 @@ func TestTemperatureService_GetMaximumDailyTemperatures_returnsOK(t *testing.T) 
 			{
 				From:      818985600000,
 				To:        1533470400000,
-				Height:    45,
+				Height:    45.0,
 				Latitude:  59.1789,
 				Longitude: 17.9125,
 			},
@@ -544,7 +544,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 			"name": "Abelvattnet Aut",
 			"owner": "SMHI",
 			"id": 154860,
-			"height": 665,
+			"height": 665.0,
 			"latitude": 65.53,
 			"longitude": 14.97,
 			"active": true,
@@ -557,7 +557,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 			"name": "Abisko",
 			"owner": "SMHI",
 			"id": 188800,
-			"height": 388,
+			"height": 388.0,
 			"latitude": 68.3557,
 			"longitude": 18.8206,
 			"active": false,
@@ -594,7 +594,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -607,7 +607,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 					Name:      "Abisko",
 					Owner:     "SMHI",
 					ID:        188800,
-					Height:    388,
+					Height:    388.0,
 					Latitude:  68.3557,
 					Longitude: 18.8206,
 					Active:    false,
@@ -640,7 +640,7 @@ func TestTemperatureService_GetStationsWithAverageDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -685,7 +685,7 @@ func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t 
 			"name": "Abelvattnet Aut",
 			"owner": "SMHI",
 			"id": 154860,
-			"height": 665,
+			"height": 665.0,
 			"latitude": 65.53,
 			"longitude": 14.97,
 			"active": true,
@@ -698,7 +698,7 @@ func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t 
 			"name": "Abisko",
 			"owner": "SMHI",
 			"id": 188800,
-			"height": 388,
+			"height": 388.0,
 			"latitude": 68.3557,
 			"longitude": 18.8206,
 			"active": false,
@@ -735,7 +735,7 @@ func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -748,7 +748,7 @@ func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t 
 					Name:      "Abisko",
 					Owner:     "SMHI",
 					ID:        188800,
-					Height:    388,
+					Height:    388.0,
 					Latitude:  68.3557,
 					Longitude: 18.8206,
 					Active:    false,
@@ -781,7 +781,7 @@ func TestTemperatureService_GetStationsWithMinimumDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -853,7 +853,7 @@ func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t 
 			"name": "Abelvattnet Aut",
 			"owner": "SMHI",
 			"id": 154860,
-			"height": 665,
+			"height": 665.0,
 			"latitude": 65.53,
 			"longitude": 14.97,
 			"active": true,
@@ -866,7 +866,7 @@ func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t 
 			"name": "Abisko",
 			"owner": "SMHI",
 			"id": 188800,
-			"height": 388,
+			"height": 388.0,
 			"latitude": 68.3557,
 			"longitude": 18.8206,
 			"active": false,
@@ -903,7 +903,7 @@ func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -916,7 +916,7 @@ func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t 
 					Name:      "Abisko",
 					Owner:     "SMHI",
 					ID:        188800,
-					Height:    388,
+					Height:    388.0,
 					Latitude:  68.3557,
 					Longitude: 18.8206,
 					Active:    false,
@@ -949,7 +949,7 @@ func TestTemperatureService_GetStationsWithMaximumDailyTemperatures_returnsOK(t 
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -981,7 +981,7 @@ func TestTemperatureService_GetStationsWithHourlyTemperatures_returnsOK(t *testi
 			"name": "Abelvattnet Aut",
 			"owner": "SMHI",
 			"id": 154860,
-			"height": 665,
+			"height": 665.0,
 			"latitude": 65.53,
 			"longitude": 14.97,
 			"active": true,
@@ -994,7 +994,7 @@ func TestTemperatureService_GetStationsWithHourlyTemperatures_returnsOK(t *testi
 			"name": "Abisko",
 			"owner": "SMHI",
 			"id": 188800,
-			"height": 388,
+			"height": 388.0,
 			"latitude": 68.3557,
 			"longitude": 18.8206,
 			"active": false,
@@ -1031,7 +1031,7 @@ func TestTemperatureService_GetStationsWithHourlyTemperatures_returnsOK(t *testi
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -1044,7 +1044,7 @@ func TestTemperatureService_GetStationsWithHourlyTemperatures_returnsOK(t *testi
 					Name:      "Abisko",
 					Owner:     "SMHI",
 					ID:        188800,
-					Height:    388,
+					Height:    388.0,
 					Latitude:  68.3557,
 					Longitude: 18.8206,
 					Active:    false,
@@ -1077,7 +1077,7 @@ func TestTemperatureService_GetStationsWithHourlyTemperatures_returnsOK(t *testi
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -1108,7 +1108,7 @@ func TestTemperatureService_GetStationsWithAverageMonthlyTemperatures_returnsOK(
 			"name": "Abelvattnet Aut",
 			"owner": "SMHI",
 			"id": 154860,
-			"height": 665,
+			"height": 665.0,
 			"latitude": 65.53,
 			"longitude": 14.97,
 			"active": true,
@@ -1121,7 +1121,7 @@ func TestTemperatureService_GetStationsWithAverageMonthlyTemperatures_returnsOK(
 			"name": "Abisko",
 			"owner": "SMHI",
 			"id": 188800,
-			"height": 388,
+			"height": 388.0,
 			"latitude": 68.3557,
 			"longitude": 18.8206,
 			"active": false,
@@ -1158,7 +1158,7 @@ func TestTemperatureService_GetStationsWithAverageMonthlyTemperatures_returnsOK(
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,
@@ -1171,7 +1171,7 @@ func TestTemperatureService_GetStationsWithAverageMonthlyTemperatures_returnsOK(
 					Name:      "Abisko",
 					Owner:     "SMHI",
 					ID:        188800,
-					Height:    388,
+					Height:    388.0,
 					Latitude:  68.3557,
 					Longitude: 18.8206,
 					Active:    false,
@@ -1204,7 +1204,7 @@ func TestTemperatureService_GetStationsWithAverageMonthlyTemperatures_returnsOK(
 					Name:      "Abelvattnet Aut",
 					Owner:     "SMHI",
 					ID:        154860,
-					Height:    665,
+					Height:    665.0,
 					Latitude:  65.53,
 					Longitude: 14.97,
 					Active:    true,

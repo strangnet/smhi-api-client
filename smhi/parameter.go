@@ -20,7 +20,7 @@ type Station struct {
 	Name      string  `json:"name,omitempty"`
 	Owner     string  `json:"owner,omitempty"`
 	ID        uint32  `json:"id,omitempty"`
-	Height    int16   `json:"height,omitempty"`
+	Height    float32 `json:"height,omitempty"`
 	Latitude  float32 `json:"latitude,omitempty"`
 	Longitude float32 `json:"longitude,omitempty"`
 	Active    bool    `json:"active,omitempty"`

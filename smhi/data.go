@@ -10,10 +10,10 @@ type ParameterData struct {
 
 // StationData holds information on the station
 type StationData struct {
-	Key    string `json:"key,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Owner  string `json:"owner,omitempty"`
-	Height int    `json:"height,omitempty"`
+	Key    string  `json:"key,omitempty"`
+	Name   string  `json:"name,omitempty"`
+	Owner  string  `json:"owner,omitempty"`
+	Height float32 `json:"height,omitempty"`
 }
 
 // PeriodData holds information on the period
@@ -29,7 +29,7 @@ type PeriodData struct {
 type PositionData struct {
 	From      uint64  `json:"from,omitempty"`
 	To        uint64  `json:"to,omitempty"`
-	Height    int     `json:"height,omitempty"`
+	Height    float32 `json:"height,omitempty"`
 	Latitude  float32 `json:"latitude,omitempty"`
 	Longitude float32 `json:"longitude,omitempty"`
 }
