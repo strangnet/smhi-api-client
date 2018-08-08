@@ -124,7 +124,7 @@ func (s *TemperatureService) GetStationsWithMinimumDailyTemperatures(ctx context
 
 // GetMaximumDailyTemperatures retrieves the maximum daily temperatures from a station
 func (s *TemperatureService) GetMaximumDailyTemperatures(ctx context.Context, station uint32, period string) (*TemperatureData, *http.Response, error) {
-	return getTemperatureData(ctx, s.client, TemperatureParameterMinimumDaily, station, period)
+	return getTemperatureData(ctx, s.client, TemperatureParameterMaximumDaily, station, period)
 }
 
 // GetStationsWithMaximumDailyTemperatures retrieves all stations with maximum daily temperatures
