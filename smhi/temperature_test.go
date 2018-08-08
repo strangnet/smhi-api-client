@@ -96,6 +96,427 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 	}
 }
 
+func TestTemperatureService_GetHourlyTemperatures_returnsOK(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/1/station/12345/period/latest-day/data.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}],
+		"updated": 1533470400000,
+		"parameter": {
+		"key": "1",
+		"name": "Lufttemperatur",
+		"summary": "momentanvärde, 1 gång/tim",
+		"unit": "degree celsius"
+		},
+		"station": {
+		"key": "97100",
+		"name": "Tullinge A",
+		"owner": "SMHI",
+		"height": 2
+		},
+		"period": {
+		"key": "latest-day",
+		"from": 1533380401000,
+		"to": 1533470400000,
+		"summary": "Data från senaste dygnet",
+		"sampling": "24 timmar"
+		},
+		"position": [
+		{
+		"from": 818985600000,
+		"to": 1533470400000,
+		"height": 45,
+		"latitude": 59.1789,
+		"longitude": 17.9125
+		}
+		]}`)
+	})
+
+	temps, _, err := client.Temperatures.GetHourlyTemperatures(context.Background(), 12345, PeriodLatestDay)
+	if err != nil {
+		t.Errorf("Temperatures.GetHourlyTemperatures returned error: %v", err)
+	}
+
+	want := &TemperatureData{
+		Value: []TemperatureDataValue{
+			{
+				From:    1533254401000,
+				To:      1533340800000,
+				Ref:     "2018-08-03",
+				Value:   "21.8",
+				Quality: "Y",
+			},
+		},
+		Updated: 1533470400000,
+		Parameter: ParameterData{
+			Key:     "1",
+			Name:    "Lufttemperatur",
+			Summary: "momentanvärde, 1 gång/tim",
+			Unit:    "degree celsius",
+		},
+		Station: StationData{
+			Key:    "97100",
+			Name:   "Tullinge A",
+			Owner:  "SMHI",
+			Height: 2,
+		},
+		Period: PeriodData{
+			Key:      "latest-day",
+			From:     1533380401000,
+			To:       1533470400000,
+			Summary:  "Data från senaste dygnet",
+			Sampling: "24 timmar",
+		},
+		Position: []PositionData{
+			{
+				From:      818985600000,
+				To:        1533470400000,
+				Height:    45,
+				Latitude:  59.1789,
+				Longitude: 17.9125,
+			},
+		},
+	}
+	if !reflect.DeepEqual(temps, want) {
+		t.Errorf("Temperatures.GetHourlyTemperatures returned %+v, want %+v", temps, want)
+	}
+}
+
+func TestTemperatureService_GetAverageMonthlyTemperatures_returnsOK(t *testing.T) {
+
+	data := `
+	{"value": [
+		{
+			"from": 1519862401000,
+			"to": 1522540800000,
+			"ref": "2018-03",
+			"value": "-3.0",
+			"quality": "Y"
+			},
+			{
+			"from": 1522540801000,
+			"to": 1525132800000,
+			"ref": "2018-04",
+			"value": "5.6",
+			"quality": "Y"
+			},
+			{
+			"from": 1525132801000,
+			"to": 1527811200000,
+			"ref": "2018-05",
+			"value": "14.2",
+			"quality": "Y"
+			},
+			{
+			"from": 1527811201000,
+			"to": 1530403200000,
+			"ref": "2018-06",
+			"value": "15.6",
+			"quality": "Y"
+			},
+			{
+			"from": 1530403201000,
+			"to": 1533081600000,
+			"ref": "2018-07",
+			"value": "20.5",
+			"quality": "Y"
+			}
+		],
+		"updated": 1533470400000,
+		"parameter": {
+			"key": "22",
+			"name": "Lufttemperatur",
+			"summary": "medel, 1 gång per månad",
+			"unit": "degree celsius"
+		},
+		"station": {
+			"key": "97100",
+			"name": "Tullinge A",
+			"owner": "SMHI",
+			"height": 2
+		},
+		"period": {
+			"key": "latest-months",
+			"from": 1522454401000,
+			"to": 1533690000000,
+			"summary": "Data från senaste fyra månaderna",
+			"sampling": "1 månad"
+		},
+		"position": [
+		{
+		"from": 818985600000,
+		"to": 1533470400000,
+		"height": 45,
+		"latitude": 59.1789,
+		"longitude": 17.9125
+		}
+		]}
+	`
+
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/22/station/12345/period/latest-months/data.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, data)
+	})
+
+	temps, _, err := client.Temperatures.GetAverageMonthlyTemperatures(context.Background(), 12345, PeriodLatestMonths)
+	if err != nil {
+		t.Errorf("Temperatures.GetAverageMonthlyTemperatures returned error: %v", err)
+	}
+
+	want := &TemperatureData{
+		Value: []TemperatureDataValue{
+			{
+				From:    1519862401000,
+				To:      1522540800000,
+				Ref:     "2018-03",
+				Value:   "-3.0",
+				Quality: "Y",
+			},
+			{
+				From:    1522540801000,
+				To:      1525132800000,
+				Ref:     "2018-04",
+				Value:   "5.6",
+				Quality: "Y",
+			},
+			{
+				From:    1525132801000,
+				To:      1527811200000,
+				Ref:     "2018-05",
+				Value:   "14.2",
+				Quality: "Y",
+			},
+			{
+				From:    1527811201000,
+				To:      1530403200000,
+				Ref:     "2018-06",
+				Value:   "15.6",
+				Quality: "Y",
+			},
+			{
+				From:    1530403201000,
+				To:      1533081600000,
+				Ref:     "2018-07",
+				Value:   "20.5",
+				Quality: "Y",
+			},
+		},
+		Updated: 1533470400000,
+		Parameter: ParameterData{
+			Key:     "22",
+			Name:    "Lufttemperatur",
+			Summary: "medel, 1 gång per månad",
+			Unit:    "degree celsius",
+		},
+		Station: StationData{
+			Key:    "97100",
+			Name:   "Tullinge A",
+			Owner:  "SMHI",
+			Height: 2,
+		},
+		Period: PeriodData{
+			Key:      "latest-months",
+			From:     1522454401000,
+			To:       1533690000000,
+			Summary:  "Data från senaste fyra månaderna",
+			Sampling: "1 månad",
+		},
+		Position: []PositionData{
+			{
+				From:      818985600000,
+				To:        1533470400000,
+				Height:    45,
+				Latitude:  59.1789,
+				Longitude: 17.9125,
+			},
+		},
+	}
+	if !reflect.DeepEqual(temps, want) {
+		t.Errorf("Temperatures.GetAverageMonthlyTemperatures returned %+v, want %+v", temps, want)
+	}
+}
+
+func TestTemperatureService_GetMinimumDailyTemperatures_returnsOK(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/19/station/12345/period/latest-day/data.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}],
+		"updated": 1533470400000,
+		"parameter": {
+		"key": "19",
+		"name": "Lufttemperatur",
+		"summary": "min, 1 gång per dygn",
+		"unit": "degree celsius"
+		},
+		"station": {
+		"key": "97100",
+		"name": "Tullinge A",
+		"owner": "SMHI",
+		"height": 2
+		},
+		"period": {
+		"key": "latest-day",
+		"from": 1533380401000,
+		"to": 1533470400000,
+		"summary": "Data från senaste dygnet",
+		"sampling": "24 timmar"
+		},
+		"position": [
+		{
+		"from": 818985600000,
+		"to": 1533470400000,
+		"height": 45,
+		"latitude": 59.1789,
+		"longitude": 17.9125
+		}
+		]}`)
+	})
+
+	temps, _, err := client.Temperatures.GetMinimumDailyTemperatures(context.Background(), 12345, PeriodLatestDay)
+	if err != nil {
+		t.Errorf("Temperatures.GetMinimumDailyTemperatures returned error: %v", err)
+	}
+
+	want := &TemperatureData{
+		Value: []TemperatureDataValue{
+			{
+				From:    1533254401000,
+				To:      1533340800000,
+				Ref:     "2018-08-03",
+				Value:   "21.8",
+				Quality: "Y",
+			},
+		},
+		Updated: 1533470400000,
+		Parameter: ParameterData{
+			Key:     "19",
+			Name:    "Lufttemperatur",
+			Summary: "min, 1 gång per dygn",
+			Unit:    "degree celsius",
+		},
+		Station: StationData{
+			Key:    "97100",
+			Name:   "Tullinge A",
+			Owner:  "SMHI",
+			Height: 2,
+		},
+		Period: PeriodData{
+			Key:      "latest-day",
+			From:     1533380401000,
+			To:       1533470400000,
+			Summary:  "Data från senaste dygnet",
+			Sampling: "24 timmar",
+		},
+		Position: []PositionData{
+			{
+				From:      818985600000,
+				To:        1533470400000,
+				Height:    45,
+				Latitude:  59.1789,
+				Longitude: 17.9125,
+			},
+		},
+	}
+	if !reflect.DeepEqual(temps, want) {
+		t.Errorf("Temperatures.GetMinimumDailyTemperatures returned %+v, want %+v", temps, want)
+	}
+}
+
+func TestTemperatureService_GetMaximumDailyTemperatures_returnsOK(t *testing.T) {
+	client, mux, _, teardown := setup()
+	defer teardown()
+
+	mux.HandleFunc("/api/version/latest/parameter/20/station/12345/period/latest-day/data.json", func(w http.ResponseWriter, r *http.Request) {
+		testMethod(t, r, "GET")
+		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}],
+		"updated": 1533470400000,
+		"parameter": {
+		"key": "20",
+		"name": "Lufttemperatur",
+		"summary": "max, 1 gång per dygn",
+		"unit": "degree celsius"
+		},
+		"station": {
+		"key": "97100",
+		"name": "Tullinge A",
+		"owner": "SMHI",
+		"height": 2
+		},
+		"period": {
+		"key": "latest-day",
+		"from": 1533380401000,
+		"to": 1533470400000,
+		"summary": "Data från senaste dygnet",
+		"sampling": "24 timmar"
+		},
+		"position": [
+		{
+		"from": 818985600000,
+		"to": 1533470400000,
+		"height": 45,
+		"latitude": 59.1789,
+		"longitude": 17.9125
+		}
+		]}`)
+	})
+
+	temps, _, err := client.Temperatures.GetMaximumDailyTemperatures(context.Background(), 12345, PeriodLatestDay)
+	if err != nil {
+		t.Errorf("Temperatures.GetMaximumDailyTemperatures returned error: %v", err)
+	}
+
+	want := &TemperatureData{
+		Value: []TemperatureDataValue{
+			{
+				From:    1533254401000,
+				To:      1533340800000,
+				Ref:     "2018-08-03",
+				Value:   "21.8",
+				Quality: "Y",
+			},
+		},
+		Updated: 1533470400000,
+		Parameter: ParameterData{
+			Key:     "20",
+			Name:    "Lufttemperatur",
+			Summary: "max, 1 gång per dygn",
+			Unit:    "degree celsius",
+		},
+		Station: StationData{
+			Key:    "97100",
+			Name:   "Tullinge A",
+			Owner:  "SMHI",
+			Height: 2,
+		},
+		Period: PeriodData{
+			Key:      "latest-day",
+			From:     1533380401000,
+			To:       1533470400000,
+			Summary:  "Data från senaste dygnet",
+			Sampling: "24 timmar",
+		},
+		Position: []PositionData{
+			{
+				From:      818985600000,
+				To:        1533470400000,
+				Height:    45,
+				Latitude:  59.1789,
+				Longitude: 17.9125,
+			},
+		},
+	}
+	if !reflect.DeepEqual(temps, want) {
+		t.Errorf("Temperatures.GetMaximumDailyTemperatures returned %+v, want %+v", temps, want)
+	}
+}
+
 func TestTemperatureService_GetAverageDailyTemperatures_returns404(t *testing.T) {
 	client, mux, _, teardown := setup()
 	defer teardown()
