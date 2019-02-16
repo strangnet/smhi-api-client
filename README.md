@@ -7,4 +7,4 @@
 
 A client library for accessing the SMHI API:s
 
-
+The API-documentation is available at: https://opendata.smhi.se/apidocs/metobs/index.html
