@@ -14,7 +14,7 @@ func TestTemperatureService_GetAverageDailyTemperatures_returnsOK(t *testing.T) 
 
 	mux.HandleFunc("/api/version/latest/parameter/2/station/12345/period/latest-day/data.json", func(w http.ResponseWriter, r *http.Request) {
 		testMethod(t, r, "GET")
-		fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}],
+		_, _ = fmt.Fprint(w, `{"value": [{"from": 1533254401000, "to": 1533340800000, "ref": "2018-08-03", "value": "21.8", "quality": "Y"}],
 		"updated": 1533470400000,
 		"parameter": {
 		"key": "2",
