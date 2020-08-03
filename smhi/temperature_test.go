@@ -835,7 +835,7 @@ func TestTemperatureService_GetHourlyTemperatures_returns404(t *testing.T) {
 
 	_, resp, err := client.Temperatures.GetHourlyTemperatures(context.Background(), 12346, PeriodLatestDay)
 	if err != nil {
-		if resp.StatusCode != http.StatusNotFound {
+		if resp != nil && resp.StatusCode != http.StatusNotFound {
 			t.Errorf("Temperatures.GetHourlyTemperatures returned error code %d, expected %d", resp.StatusCode, http.StatusNotFound)
 		}
 	}
