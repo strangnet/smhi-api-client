@@ -6,9 +6,7 @@ GO_FILES := $(shell find . -name '*.go' | grep -v /vendor/ | grep -v _test.go)
 .PHONY: docs build internal
 
 dep:
-	go get -u golang.org/x/lint/golint 
-	glide --version || go get -v github.com/Masterminds/glide
-	glide install
+	go get -u golang.org/x/lint/golint
 
 lint:
 	go vet ./...
